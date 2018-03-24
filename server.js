@@ -8,7 +8,7 @@ var url = require('url');
 let app = express();
 
 /* Constants */
- const PORT = process.env.PORT || 3000;
+ const PORT = process.env.PORT || 80;
  const ROOT = __dirname + '/public/';
 
 /* Middle Ware */
