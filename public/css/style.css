@@ -1,0 +1,11 @@
+.page-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 23%;
+}
+
+#ui_2, #ui_3, #ui_err, #ui_attemptexceed, #ui_end{
+  display: none;
+} 

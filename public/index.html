@@ -1,29 +1,124 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>COMP 3008</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  </head>
-  <body>
-    <h1>Testing routes for password scheme site</h1>
-    <h3>Click blue box to test post log</h3>
-    <div id='testRoute1' style="height: 100px; background-color: blue; top:20px; margin-right:40%;margin-left:40%;">
-      <p >Click me to test post</p>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>PasswordScheme Name Here</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="grey darken-3" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Group 35: SchemeName</a>
     </div>
-    <br>
-    <h3>Click red box to test getLog</h3>
-    <div id='testRoute2' style="height: 100px; background-color: red; top:20px; margin-right:40%;margin-left:40%;">
-      <p >Click me to test getLog</p>
+  </nav>
+  <div class="section no-pad-bot" id="ui_1">
+    <div class="container">
+      <br><br>
+      <h1 class="header center red-text text-lighten-1">Password Scheme Tester</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">{Brief introduction of test} <br>click "Start Testing" to start the test</h5>
+      </div>
+      <div class="row center">
+        <button id="startTestButton" class="btn-large waves-effect waves-light red">Start Testing</button>
+      </div>
     </div>
-    <h3>Click yellow box to test login</h3>
-    <div id='testRoute3' style="height: 100px; background-color: yellow; top:20px; margin-right:40%;margin-left:40%;">
-      <p >Click me to test login</p>
+  </div>
+  <div class="section no-pad-bot" id="ui_2">
+    <div class="container">
+      <br><br>
+      <h1 class="header center">Email: <span class="red-text" id="password1">PassWord</span></h1>
+      <h1 class="header center">Shopping: <span class="red-text" id="password2">PassWord</span></h1>
+      <h1 class="header center">Banking: <span class="red-text" id="password3">PassWord</span></h1>
+      <div class="row center">
+          <h5 class="header col s12 light">You have three passwords (highlighted in red) for different services.<br>Click next after you remember your password.</h5>
+      </div>
+      <div class="row center">
+        <button id="nextButton" class="btn-large waves-effect waves-light red">Next</button>
+      </div>
     </div>
-    <h3>Click Cyan box to test register</h3>
-    <div id='testRoute4' style="height: 100px; background-color: cyan; top:20px; margin-right:40%;margin-left:40%;">
-      <p >Click me to test register</p>
+  </div>
+  <div class="section no-pad-bot" id="ui_3">
+    <div class="container">
+      <br><br>
+      <h1 class="header center red-text text-lighten-1"></h1>
+      <div class="row center">
+          <h5 class="header col s12 light">Please enter your <span class="red-text" id="service"></span>  password. You have <span id="counter"></span> attempts left.</h5>
+      </div>
+      <div class="row center">
+      <div class="row">
+        <input id="passwordInput" type="password" class="validate">
+        <label for="password">Password</label>
+      </div>
+        <button id="loginButton" class="btn-large waves-effect waves-light blue">Login</button>
+      </div>
     </div>
-    <script src="controller.js"></script>
+  </div>
+  <div class="section no-pad-bot" id="ui_end">
+    <div class="container">
+      <br><br>
+      <h1 class="header center red-text text-lighten-1">Test is Over</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Thankyou for your participation!</h5>
+      </div>
+    </div>
+  </div>
+  <div class="section no-pad-bot" id="ui_err">
+    <div class="container">
+      <br><br>
+      <h1 class="header center red-text text-lighten-1" id="err_msg"></h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Refresh to start again</h5>
+      </div>
+    </div>
+  </div>
+  <div class="section no-pad-bot" id="ui_attemptexceed">
+    <div class="container">
+      <br><br>
+      <h1 class="header center red-text text-lighten-1" id="Exceeded">Attempt Exceeded</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Test is now over. Thankyou for participating!</h5>
+      </div>
+    </div>
+  </div>
+  <footer class="page-footer grey darken-3">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">PasswordScheme Name Here</h5>
+          <p class="grey-text text-lighten-4">
+            Description of project and password scheme
+          </p>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Student Names</h5>
+          <ul>
+            <li>Name 1</li>
+            <li>Name 2</li>
+            <li>Name 3</li>
+            <li>Name 4</li>
+            <li>Name 5</li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Contact</h5>
+          <ul>
+            <li>Email 1</li>
+            <li>Email 2</li>
+            <li>Email 3</li>
+            <li>Email 4</li>
+            <li>Email 5</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/index.js"></script>
   </body>
 </html>
