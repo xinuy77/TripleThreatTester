@@ -21,6 +21,7 @@ function showPassword() {
             showErr(err);
         }
         else {
+            data    = JSON.parse(data);
             userId  = data.userId;
             attempt = 3;
             listenNextButton();
