@@ -22,14 +22,16 @@ app.use(express.static(ROOT));
   Format: {Log: {timeStamp: “”, userId: number, header: “”, result: “”}}
 */
 app.post('/log', function(req, res)
-{
+{/*
   let reqData = ''
   req.on('data', function (chunk) {
     reqData += chunk
-  })
+  })*/
+    /*
   req.on('end', function()
   {
     /* TODO enter user json into database see format above for data */
+    /*
     let dataObj = JSON.parse(reqData);
     console.log(dataObj);
     console.log('timeStamp: ' +
@@ -37,9 +39,11 @@ app.post('/log', function(req, res)
                  dataObj.Log.userId + ', Header: ' +
                  dataObj.Log.header + ', result: ' +
                  dataObj.Log.result);
-
-    res.send('<h1>Post Log data</h1>');
-  })
+    */
+    var body = req.body;
+    console.log(body);
+    res.sendStatus(200);
+ // })
 });
 
 /*

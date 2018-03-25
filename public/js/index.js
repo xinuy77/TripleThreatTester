@@ -1,11 +1,23 @@
 var userId;
 var attempt      = 0;
-var passwordType = 1;
+var passwordType = 1; // 1 = password_1, 2 = password_2, 3 = password_3
+var performance  = window.performance;
+var startTime;
+var endTime;
+var logData = [];
+
 M.AutoInit();
 
 $(document).ready(()=>{
     listenStartButton();
 });
+
+function log(userId, passwordType, duration, result) {
+    this.UserId       = userId;
+    this.PasswordType = passwordType;
+    this.Duration     = duration; //time duration of attempt in millisecond
+    this.Result       = result;
+};
 
 function listenStartButton() {
     $("#startTestButton").click(()=>{
@@ -54,7 +66,9 @@ function showPasswordInput() {
     else if(passwordType === 3) {
         $("#service").text("Banking");
     }
-    $("#ui_3").fadeIn();
+    $("#ui_3").fadeIn(null, ()=>{
+        startTime = performance.now();
+    });
 };
 
 function refreshAttemptCounter() {
@@ -103,15 +117,22 @@ function nextPhase() {
 function showEnd() {
     $("#ui_3").fadeOut(null, ()=>{
         $("#ui_end").fadeIn();
+        postLog();
     });
+};
+
+function postLog() {
+    api("POST", "/log", JSON.stringify(logData), (res)=>{/*donothing*/});
 };
 
 function login(password) {
     var data = {userId: userId, password: password, passwordType: passwordType};
+    endTime  = performance.now();
     api("POST", "/login", JSON.stringify(data), (res)=>{
         if(res === -1) {
             attempt--;
             M.toast({html: '<h4>Incorrect Password!</h4>'});
+            logData[logData.length] = new log(userId, passwordType, (endTime-startTime), "LoginFailed"); 
             if(attempt === 0) {
                 showAttemptExceed();
             }
@@ -121,6 +142,7 @@ function login(password) {
         }
         else {
             M.toast({html: '<h4>Successful Login!</h4>'});
+            logData[logData.length] = new log(userId, passwordType, (endTime-startTime), "LoginSuccess"); 
             nextPhase();
         }
     });
