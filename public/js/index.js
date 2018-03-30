@@ -97,7 +97,7 @@ function showErr(err) {
 };
 
 function showAttemptExceed() {
-    M.toast({html: '<h4 class="red-text">Attempt Exceeded!</h4>'});
+    M.toast({html: '<h4 class="red-text">Attempt Exceeded!</h4>', displayLength:500});
     nextPhase();
 };
 
@@ -131,7 +131,7 @@ function login(password) {
     api("POST", "/login", JSON.stringify(data), (res)=>{
         if(res === -1) {
             attempt--;
-            M.toast({html: '<h4>Incorrect Password!</h4>'});
+            M.toast({html: '<h4>Incorrect Password!</h4>', displayLength:500});
             logData[logData.length] = new log(userId, passwordType, (endTime-startTime), "LoginFailed"); 
             if(attempt === 0) {
                 showAttemptExceed();
@@ -141,7 +141,7 @@ function login(password) {
             }
         }
         else {
-            M.toast({html: '<h4>Successful Login!</h4>'});
+            M.toast({html: '<h4>Successful Login!</h4>', displayLength: 500});
             logData[logData.length] = new log(userId, passwordType, (endTime-startTime), "LoginSuccess"); 
             nextPhase();
         }
