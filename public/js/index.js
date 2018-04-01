@@ -127,6 +127,7 @@ function postLog() {
 
 function login(password) {
     var data = {userId: userId, password: password, passwordType: passwordType};
+    $("#passwordInput").val('');
     endTime  = performance.now();
     api("POST", "/login", JSON.stringify(data), (res)=>{
         if(res === -1) {
@@ -141,6 +142,8 @@ function login(password) {
             }
         }
         else {
+            console.log(data);
+            console.log(res);
             M.toast({html: '<h4>Successful Login!</h4>', displayLength: 500});
             logData[logData.length] = new log(userId, passwordType, (endTime-startTime), "LoginSuccess"); 
             nextPhase();
