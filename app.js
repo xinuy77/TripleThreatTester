@@ -6,13 +6,23 @@ var url          = require('url');
 var collection   = require('./mongo');
 var passwordList = require('./password.json');
 var app          = express();
+var http         = require('http');
+var https        = require('https');
+var fs           = require('fs');
 
 /* Constants */
 const PORT    = process.env.PORT || 80;
 const ROOT    = __dirname + '/public/';
+const KEY     = '';
+const CRT     = '';
 const USER    = "user";
 const COUNTER = "counter";
 const LOG     = "log";
+
+var options = {
+    key: fs.readFileSync(KEY),
+    cert: fs.readFileSync(CRT)
+};
 
 /* Middle Ware */
 app.use(bodyParser());
@@ -94,9 +104,6 @@ app.get('/register', function(req, res) {
     });
 });
 
-/* Start server */
- app.listen(PORT, start);
-
 function User(userId, password_1, password_2, password_3) {
     this.userId     = userId;
     this.password_1 = password_1;
@@ -143,3 +150,10 @@ function start() {
         console.log('Server running on port: ' + PORT);
     });
 };
+
+/* Start server */
+// app.listen(PORT, start);
+
+var server = https.createServer(options, app).listen(PORT, function(){
+    start();
+});
