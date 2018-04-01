@@ -44,7 +44,6 @@ app.post('/login', function(req, res) {
                 res.sendStatus(401);
             }
             else {
-                console.log(data);
                 res.sendStatus(200);
             }
         });

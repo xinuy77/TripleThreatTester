@@ -143,8 +143,6 @@ function login(password) {
             }
         }
         else {
-            console.log(data);
-            console.log(res);
             M.toast({html: '<h4>Successful Login!</h4>', displayLength: 500});
             logData[logData.length] = new log(new Date().toLocaleString(), userId, passwordType, (endTime-startTime), "LoginSuccess"); 
             nextPhase();
