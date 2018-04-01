@@ -97,7 +97,7 @@ function User(userId, password_1, password_2, password_3) {
     this.userId     = userId;
     this.password_1 = password_1;
     this.password_2 = password_2;
-    this.password_3 = password_1;
+    this.password_3 = password_3;
 };
 
 function randomIndex() {
