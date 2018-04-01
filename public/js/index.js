@@ -12,7 +12,8 @@ $(document).ready(()=>{
     listenStartButton();
 });
 
-function log(userId, passwordType, duration, result) {
+function log(timestamp, userId, passwordType, duration, result) {
+    this.Date         = timestamp;
     this.UserId       = userId;
     this.PasswordType = passwordType;
     this.Duration     = duration; //time duration of attempt in millisecond
@@ -133,7 +134,7 @@ function login(password) {
         if(res === -1) {
             attempt--;
             M.toast({html: '<h4>Incorrect Password!</h4>', displayLength:500});
-            logData[logData.length] = new log(userId, passwordType, (endTime-startTime), "LoginFailed"); 
+            logData[logData.length] = new log(new Date().toLocaleString(), userId, passwordType, (endTime-startTime), "LoginFailed"); 
             if(attempt === 0) {
                 showAttemptExceed();
             }
@@ -145,7 +146,7 @@ function login(password) {
             console.log(data);
             console.log(res);
             M.toast({html: '<h4>Successful Login!</h4>', displayLength: 500});
-            logData[logData.length] = new log(userId, passwordType, (endTime-startTime), "LoginSuccess"); 
+            logData[logData.length] = new log(new Date().toLocaleString(), userId, passwordType, (endTime-startTime), "LoginSuccess"); 
             nextPhase();
         }
     });
