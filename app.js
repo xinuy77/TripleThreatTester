@@ -6,23 +6,13 @@ var url          = require('url');
 var collection   = require('./mongo');
 var passwordList = require('./password.json');
 var app          = express();
-var http         = require('http');
-var https        = require('https');
-var fs           = require('fs');
 
 /* Constants */
 const PORT    = process.env.PORT || 80;
 const ROOT    = __dirname + '/public/';
-const KEY     = '';
-const CRT     = '';
 const USER    = "user";
 const COUNTER = "counter";
 const LOG     = "log";
-
-var options = {
-    key: fs.readFileSync(KEY),
-    cert: fs.readFileSync(CRT)
-};
 
 /* Middle Ware */
 app.use(bodyParser());
@@ -152,8 +142,5 @@ function start() {
 };
 
 /* Start server */
-// app.listen(PORT, start);
+app.listen(PORT, start);
 
-var server = https.createServer(options, app).listen(PORT, function(){
-    start();
-});
