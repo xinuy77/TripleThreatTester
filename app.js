@@ -6,22 +6,37 @@ var url          = require('url');
 var collection   = require('./mongo');
 var passwordList = require('./password.json');
 var app          = express();
+var http         = require( 'http' );
+var https        = require( 'https' );
+var fs           = require( 'fs' );
 
 /* Constants */
-const PORT    = process.env.PORT || 3000;
+const PORT    = process.env.PORT || 443;
 const ROOT    = __dirname + '/public/';
 const USER    = "user";
 const COUNTER = "counter";
 const LOG     = "log";
+
+/* Read pem */
+var options = {
+  key: fs.readFileSync( './privkey.pem' ),
+  cert: fs.readFileSync( './cert.pem' )
+};
 
 /* Middle Ware */
 app.use(bodyParser());
 app.use(express.static(ROOT));
 
 /* Routes */
-app.post('/login', function(req, res) {
-    var data = req.body;
 
+//  Check Database if given userId and 
+//  password exists. Respond 200 if pass 
+//  -word exists, 401 if none, 400 in err
+app.post('/login', function(req, res) {
+    var data = req.body; 
+    
+    // Organize data according to
+    // password type.
     if(data.passwordType === 1) {
         data.password_1 = data.password;
     }
@@ -32,9 +47,10 @@ app.post('/login', function(req, res) {
         data.password_3 = data.password;
     }
 
-    delete data.password;
+    // remove data not requried
+    delete data.password; 
     delete data.passwordType;
-    
+
     collection(USER, (db)=>{
         db.findOne(data, (err, dbRes)=>{
             if(err) {
@@ -50,6 +66,8 @@ app.post('/login', function(req, res) {
     });
 });
 
+// Inserts recieved log from client
+// to database
 app.post('/log', function(req, res) {
     var data = req.body;
 
@@ -60,6 +78,7 @@ app.post('/log', function(req, res) {
     });
 });
 
+// Response every log in databaase
 app.get('/log', function(req, res) {
     collection(LOG, (db)=>{
         db.find({}).toArray((err, data)=>{
@@ -68,11 +87,13 @@ app.get('/log', function(req, res) {
     });
 });
 
+// generates userId and 3 password, 
+// inserts it to database and then 
+// response back to client
 app.get('/register', function(req, res) {
-    /* generate userId(auto-incremented number) 
-     * and password, log to DB, response data in JSON
-     */
     var userData;
+    
+    // Passwords are selected randomly from password list 
     var password_1 = capitalize(passwordList.password[randomIndex()]) + 
                      capitalize(passwordList.password[randomIndex()]) + 
                      capitalize(passwordList.password[randomIndex()]); 
@@ -93,6 +114,16 @@ app.get('/register', function(req, res) {
     });
 });
 
+/* functions */
+
+/**
+ * User Object
+ *
+ * @param number userId 
+ * @param string password_1 
+ * @param string password_2
+ * @param string password_3
+ */
 function User(userId, password_1, password_2, password_3) {
     this.userId     = userId;
     this.password_1 = password_1;
@@ -100,19 +131,40 @@ function User(userId, password_1, password_2, password_3) {
     this.password_3 = password_3;
 };
 
+/**
+ * Returns randomIndex
+ * based on length of passwordlist
+ *
+ * @return number
+ */
 function randomIndex() {
     return Math.floor((Math.random() * (passwordList.password.length - 1)));
 };
 
+/**
+ * Capitalizes first letter
+ * in string
+ *
+ * @param string string
+ * @return string
+ */
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+/**
+ * Initializes counter in database
+ * for generating auto-incremented userId
+ *
+ * @param function callback
+ */
 function initCounter(callback) {
     var counter = {_id: "userId", seq:0};
 
     collection(COUNTER, (db)=>{
         db.count((err, count)=>{
+            // create counter if none exists
+            // else do nothing
             if(! err && count === 0) {
                 db.insert(counter);
             }
@@ -121,6 +173,12 @@ function initCounter(callback) {
     });
 };
 
+/**
+ * Gets next userId from db,
+ * returns to callback
+ *
+ * @param function callback
+ */
 function getNextId(callback) {
     var query_1 = {_id: "userId"};
     var id;
@@ -134,6 +192,10 @@ function getNextId(callback) {
     }); 
 }
 
+/**
+ * Initializes counter, 
+ * outputs running port
+ */
 function start() {
     initCounter(()=>{
         console.log('Server running on port: ' + PORT);
@@ -141,5 +203,10 @@ function start() {
 };
 
 /* Start server */
-app.listen(PORT, start);
 
+//app.listen(PORT, start); // use this for http
+
+// Creates server, listen to port
+var server = https.createServer(options, app).listen(PORT, function(){
+    start();
+});

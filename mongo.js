@@ -3,6 +3,13 @@ const test        = require('assert');
 const url         = 'mongodb://localhost:27017';
 const dbName      = 'triplethreat';
 
+/**
+ * Returns collection from db
+ * by given name to callback
+ *
+ * @param string name
+ * @param function callback
+ */
 function collection(name, callback) {
     MongoClient.connect(url, function(err, client) {
       // Create a collection we want to drop later
