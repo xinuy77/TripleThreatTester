@@ -8,7 +8,7 @@ var passwordList = require('./password.json');
 var app          = express();
 
 /* Constants */
-const PORT    = process.env.PORT || 80;
+const PORT    = process.env.PORT || 3000;
 const ROOT    = __dirname + '/public/';
 const USER    = "user";
 const COUNTER = "counter";
