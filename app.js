@@ -6,9 +6,10 @@ var url          = require('url');
 var collection   = require('./mongo');
 var passwordList = require('./password.json');
 var app          = express();
-var http         = require( 'http' );
-var https        = require( 'https' );
-var fs           = require( 'fs' );
+var http         = require('http');
+var https        = require('https');
+var fs           = require('fs');
+var exportCSV    = require('./csv-export');
 
 /* Constants */
 const PORT    = process.env.PORT || 443;
@@ -82,7 +83,33 @@ app.post('/log', function(req, res) {
 app.get('/log', function(req, res) {
     collection(LOG, (db)=>{
         db.find({}).toArray((err, data)=>{
-            res.send(JSON.stringify(data));        
+            res.send(JSON.stringify(data));
+            for(var i = 0; i < data.length; i ++) {
+                data[i].Date     = data[i].Date.replace(',', '');
+                data[i].Duration = data[i].Duration * 0.001;
+                delete data[i]._id;
+            }
+
+            exportCSV(data, ()=>{
+                res.sendFile(__dirname + '/log.zip');        
+            });
+        });
+    });
+});
+
+// Exports CSV
+app.get('/export', function(req, res) {
+    collection(LOG, (db)=>{
+        db.find({}).toArray((err, data)=>{
+            for(var i = 0; i < data.length; i ++) {
+                data[i].Date     = data[i].Date.replace(',', '');
+                data[i].Duration = data[i].Duration * 0.001;
+                delete data[i]._id;
+            }
+
+            exportCSV(data, ()=>{
+                res.sendFile(__dirname + '/log.zip');        
+            });
         });
     });
 });
@@ -207,6 +234,4 @@ function start() {
 //app.listen(PORT, start); // use this for http
 
 // Creates server, listen to port
-var server = https.createServer(options, app).listen(PORT, function(){
-    start();
-});
+https.createServer(options, app).listen(PORT, start);
