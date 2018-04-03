@@ -216,6 +216,7 @@ function login(password) {
             attempt--;
             M.toast({html: '<h4>Incorrect Password!</h4>', displayLength:500});
             logData[logData.length] = new log(new Date().toLocaleString(), userId, passwordType, (endTime-startTime), "LoginFailed"); 
+            startTime = performance.now(); 
 
             // Show attempt exceeded if attempt counter is 0
             // Refresh attempt counter in UI otherwise
