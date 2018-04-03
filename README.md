@@ -6,6 +6,8 @@
 - **If you don't have .pem, follow steps below**
 
 ```
+// app.js
+
 // change port number
 const PORT = process.env.PORT || 3000; // line 15
 
@@ -27,6 +29,8 @@ app.listen(PORT, start);
 ## Usage
 
 ```
+// Terminal
+
 // install dependencies
 $ npm install
 
