@@ -19,6 +19,7 @@ const COUNTER = "counter";
 const LOG     = "log";
 
 /* Read pem */
+
 var options = {
   key: fs.readFileSync( './privkey.pem' ),
   cert: fs.readFileSync( './cert.pem' )
